@@ -746,6 +746,7 @@ TODO
 
 - [《单元测试主要的测试功能点》](https://blog.csdn.net/wqetfg/article/details/50900512)
   - 模块接口测试、局部数据结构测试、路径测试 、错误处理测试、边界条件测试 。 
+- [《轻松编写 C++ 单元测试》](https://www.ibm.com/developerworks/cn/linux/l-cn-cppunittest/index.html)
 
 ## 压力测试
 
@@ -1185,10 +1186,11 @@ MyISAM 是非聚集，InnoDB 是聚集
 #### 复合索引
 
 * [《复合索引的优点和注意事项》](https://www.cnblogs.com/summer0space/p/7247778.html)
-	* 文中有一处错误：
-	> 对于复合索引,在查询使用时,最好将条件顺序按找索引的顺序,这样效率最高; select * from table1 where col1=A AND col2=B AND col3=D 如果使用 where col2=B AND col1=A 或者 where col2=B 将不会使用索引
-	* 原文中提到索引是按照“col1，col2，col3”的顺序创建的，而mysql在按照最左前缀的索引匹配原则，且会自动优化 where 条件的顺序，当条件中只有 col2=B AND col1=A 时，会自动转化为 col1=A AND col2=B，所以依然会使用索引。
-	
+  * 文中有一处错误：
+  > 对于复合索引,在查询使用时,最好将条件顺序按找索引的顺序,这样效率最高; select * from table1 where col1=A AND col2=B AND col3=D 如果使用 where col2=B AND col1=A 或者 where col2=B 将不会使用索引
+
+  * 原文中提到索引是按照“col1，col2，col3”的顺序创建的，而mysql在按照最左前缀的索引匹配原则，且会自动优化 where 条件的顺序，当条件中只有 col2=B AND col1=A 时，会自动转化为 col1=A AND col2=B，所以依然会使用索引。
+
 * [《MySQL查询where条件的顺序对查询效率的影响》](https://www.cnblogs.com/acode/p/7489258.html)
 	
 #### 自适应哈希索引(AHI)
@@ -1941,9 +1943,11 @@ TODO
 ## 法律
 
 * [《中华人民共和国网络安全法》](https://baike.baidu.com/item/%E4%B8%AD%E5%8D%8E%E4%BA%BA%E6%B0%91%E5%85%B1%E5%92%8C%E5%9B%BD%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%B3%95/16843044)
+
   * 2016年11月7日发布，自2017年6月1日起施行
 
 * [《个人信息保护法》](https://baike.baidu.com/item/个人信息保护法/8343360)
+
   * 个人信息保护法是一部保护个人信息的法律条款，现尚在制订中，2019全国两会信息安全相关提案中，有政协委员呼吁关注大数据时代隐私保护，加速立法。
 
 * [《最高人民法院、最高人民检察院关于办理侵犯公民个人信息刑事案件适用法律若干问题的解释》](https://baike.baidu.com/item/最高人民法院、最高人民检察院关于办理侵犯公民个人信息刑事案件适用法律若干问题的解释/20497481)
