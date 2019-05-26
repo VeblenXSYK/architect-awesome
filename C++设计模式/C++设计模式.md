@@ -834,3 +834,58 @@ int main() {
 ```
 UML图：
 ![observer](img\design_pattern\decorator.png)
+
+# 八、代理模式
+
+	代理模式就是为其他对象提供一种代理以控制对这个对象的访问，有四种常用的情况：1、远程代理；2、虚代理；3、保护代理；4、智能引用。下面的例子就是虚代理的情况。
+
+```
+#include <iostream>
+
+using namespace std;
+
+class Image {
+public:
+    Image(string name) : m_imageName(name){}
+    virtual ~Image(){}
+    virtual void Show(){}
+protected:
+    string m_imageName;
+};
+
+class BigImage : public Image {
+public:
+    BigImage(string name) : Image(name){}
+    ~BigImage() {}
+    void Show() {
+        cout << "Show big image: " << m_imageName << endl;
+    }
+};
+
+class BigImageProxy : public Image {
+private:
+    BigImage *m_bigImage;
+public:
+    BigImageProxy(string name) : Image(name), m_bigImage(NULL){}
+    ~BigImageProxy() { delete m_bigImage; }
+    void Show() {
+        if (m_bigImage == NULL) {
+            m_bigImage = new BigImage(m_imageName);
+        }
+
+        m_bigImage->Show();
+    }
+};
+
+int main() {
+
+    Image *image = new BigImageProxy("xxx.jpg"); 
+    image->Show();
+    delete image;
+
+    return 0;
+}
+```
+UML图：
+
+![observer](img\design_pattern\proxy.png)
