@@ -290,9 +290,10 @@ public:
 	}  
 };  
 
-//Cache需要用到替换算法
-enum RA {LRU, FIFO, RANDOM};  //标签
-class Cache
+//Cache需要用到的替换算法标签
+enum RA {LRU, FIFO, RANDOM};
+
+class Cache	//策略模式与简单工厂模式相结合，只暴露Cache类给客户端
 {
 private:
 	ReplaceAlgorithm *m_ra;
@@ -300,7 +301,7 @@ public:
 	Cache(enum RA ra) 
 	{ 
 		if(ra == LRU)
-			m_ra = new LRU_ReplaceAlgorithm();
+			m_ra = new LRU_ReplaceAlgorithm();	
 		else if(ra == FIFO)
 			m_ra = new FIFO_ReplaceAlgorithm();
 		else if(ra == RANDOM)
@@ -748,3 +749,88 @@ int main()
 UML图：
 
 ![mediator](img\design_pattern\mediator.png)
+
+# 七、装饰模式
+
+	装饰模式是为了已有功能动态添加更多功能的一种方式，python中装饰器就是采用的装饰模式。
+```
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Component { // 接口
+public:
+    virtual void Operation() = 0;
+};
+
+class ConcreteComponent : public Component { // 具体实现对象，需要被装饰的类
+public:
+    void Operation() {
+        cout << "ConcreteComponent" << endl;
+    }
+};
+
+class Decorator : public Component {        // 装饰基类
+private:
+    Component *component;
+public:
+    void SetComponent(Component *c) {       // 设置Component
+        component = c;
+    }
+
+    virtual void Operation() {              // 重写Operation()，实际执行的是Component的Operation()
+        if (component) {
+            component->Operation();
+        }
+    }
+};
+
+class ConcreteDecoratorA : public Decorator {
+private:
+    string addedState;  // 本类的独有变量，区别于ConcreteDecoratorB
+public:
+    void Operation() {
+        // 首先运行原Component的Operation()，再执行本类的功能，如 addedState，相当于对原Component进行了装饰
+        Decorator::Operation();
+        addedState = "New State";
+        cout << "ConcreteDecoratorA: AddedBehavior" << endl;
+    }
+};
+
+class ConcreteDecoratorB : public Decorator {
+public:
+    void Operation() {
+        // 首先运行原Component的Operation()，再执行本类的功能，如 AddedBehavior，相当于对原Component进行了装饰
+        Decorator::Operation();
+        AddedBehavior();
+        cout << "ConcreteDecoratorB: AddedBehavior" << endl;
+    }
+private:
+    void AddedBehavior() {  // 本类独有的方法，以区别于ConcreteDecoratorA
+
+    }
+};
+
+int main() {
+
+    Component *c = new ConcreteComponent();
+
+    Decorator *da = new ConcreteDecoratorA();
+    da->SetComponent(c);
+    da->Operation();
+
+    Decorator *db = new ConcreteDecoratorB();
+    db->SetComponent(c);
+    db->Operation();
+
+    delete db;
+    delete da;
+    delete c;
+
+    return 0;
+}
+
+```
+UML图：
+![observer](img\design_pattern\decorator.png)
