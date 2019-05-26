@@ -889,3 +889,73 @@ int main() {
 UML图：
 
 ![observer](img\design_pattern\proxy.png)
+
+# 九、原型模式
+
+	原型模式不用重新初始化对象，而是动态获得对象运行时的状态。
+```
+#include <iostream>
+#include <string>
+#include <string.h>
+
+using namespace std;
+
+class Resume {
+protected:
+    char *name;
+public:
+    Resume() {}
+    virtual ~Resume() {}
+    virtual Resume *Clone() { return NULL; }
+    virtual void Set(const char *str) {}
+    virtual void Show() {}
+};
+
+class ResumeA : public Resume {
+public:
+    ResumeA(const char *str) {
+        if (str == NULL) {
+            name = new char[1];
+            name[0] = '\0';
+        } else {
+            name = new char[strlen(str) + 1];
+            strcpy(name, str);
+        }
+    }
+    ResumeA(const ResumeA &r) {
+        cout << "ResumeA copy constructor" << endl;
+        name = new char[strlen(r.name) + 1];
+        strcpy(name, r.name);
+    }
+    ~ResumeA() {
+        delete [] name;
+    }
+    ResumeA *Clone() {
+        return new ResumeA(*this);
+    }
+    void Set(const char *str) {
+        delete name;
+        name = new char[strlen(str) + 1];
+        strcpy(name, str);
+    }
+    void Show() {
+        cout << "ResumeA name:" << name << endl;
+    }             
+};
+
+int main() {
+
+    Resume *r1 = new ResumeA("2");
+    Resume *r2 = r1->Clone();
+    r1->Set("1");
+
+    r1->Show();
+    r2->Show();
+
+    return 0;
+}
+```
+
+UML图：
+
+![observer](img\design_pattern\clone.png)
