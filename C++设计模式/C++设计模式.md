@@ -959,3 +959,70 @@ int main() {
 UML图：
 
 ![observer](img\design_pattern\clone.png)
+
+# 九、模板方法模式
+
+	模板方法模式是通过把不变行为搬移到超类，去除子类中的重复代码来体现它的优势
+
+```
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Resume {
+protected:
+    virtual void SetPersonalInfo(){}
+    virtual void SetEducation(){}
+    virtual void SetWorkExp(){}
+public:
+    void FillResume() {
+        SetPersonalInfo();
+        SetEducation();
+        SetWorkExp();
+    }
+};
+
+class ResumeA : public Resume {
+protected:
+    void SetPersonalInfo() {
+        cout << "A's PersonalInfo" << endl;
+    }
+    void SetEducation() {
+        cout << "A's Education" << endl;
+    }
+    void SetWorkExp() {
+        cout << "A's Work Experience" << endl;
+    }
+};
+
+class ResumeB : public Resume {
+protected:
+    void SetPersonalInfo() {
+        cout << "B's PersonalInfo" << endl;
+    }
+    void SetEducation() {
+        cout << "B's Education" << endl;
+    }
+    void SetWorkExp() {
+        cout << "B's Work Experience" << endl;
+    }
+};
+
+int main() {
+
+    Resume *ra = new ResumeA();
+    ra->FillResume();
+    delete ra;
+
+    Resume *rb = new ResumeB();
+    rb->FillResume();
+    delete rb;
+
+    return 0;
+}
+```
+
+UML图：
+
+![observer](img\design_pattern\template.png)
