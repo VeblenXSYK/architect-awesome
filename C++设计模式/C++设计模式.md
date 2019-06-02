@@ -1092,3 +1092,78 @@ int main() {
 UML图：
 
 ![observer](img\design_pattern\facade.png)
+
+# 十二、建造者模式
+
+	建造者模式的定义将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。
+
+```
+#include <iostream>
+
+using namespace std;
+
+class Builder {
+public:
+    virtual void BuildHead() = 0;
+    virtual void BuildBody() = 0;
+    virtual void BuildLeftArm() = 0;
+    virtual void BuildRightArm() = 0;
+    virtual void BuildLeftLeg() = 0;
+    virtual void BuildRightLeg() = 0;
+};
+
+// 构造瘦人
+class ThinBuilder : public Builder {
+public:
+    void BuildHead() { cout << "build thin body" << endl; }
+	void BuildBody() { cout << "build thin head" << endl; }
+	void BuildLeftArm() { cout << "build thin leftarm" << endl; }
+	void BuildRightArm() { cout << "build thin rightarm" << endl; }
+	void BuildLeftLeg() { cout << "build thin leftleg" << endl; }
+	void BuildRightLeg() { cout << "build thin rightleg" << endl; }
+};
+
+// 构造胖人
+class FatBuilder : public Builder {
+public:
+    void BuildHead() { cout << "build Fat body" << endl; }
+	void BuildBody() { cout << "build Fat head" << endl; }
+	void BuildLeftArm() { cout << "build Fat leftarm" << endl; }
+	void BuildRightArm() { cout << "build Fat rightarm" << endl; }
+	void BuildLeftLeg() { cout << "build Fat leftleg" << endl; }
+	void BuildRightLeg() { cout << "build Fat rightleg" << endl; }
+};
+
+// 构造指挥者
+class Director {
+private:
+    Builder *m_pBuilder;
+public:
+    Director(Builder *buidler) { m_pBuilder = buidler; }
+    void Create() {
+        m_pBuilder->BuildHead();
+        m_pBuilder->BuildBody();
+        m_pBuilder->BuildLeftArm();
+        m_pBuilder->BuildRightArm();
+        m_pBuilder->BuildLeftLeg();
+        m_pBuilder->BuildRightLeg();
+    }
+};
+
+int main() {
+
+    ThinBuilder thin;
+    Director director1(&thin);
+    director1.Create();
+
+    FatBuilder fat;
+    Director director2(&fat);
+    director2.Create();
+
+    return 0;
+}
+```
+
+UML图：
+
+![observer](img\design_pattern\build.png)
