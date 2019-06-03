@@ -1315,4 +1315,4 @@ int main() {
 
 UML图：
 
-![observer](img\design_pattern\build.png)
+![observer](img\design_pattern\state.png)
