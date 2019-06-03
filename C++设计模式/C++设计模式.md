@@ -1167,3 +1167,152 @@ int main() {
 UML图：
 
 ![observer](img\design_pattern\build.png)
+
+# 十三、状态模式
+
+	状态模式允许一个对象在其内部状态改变时改变它的行为。
+
+```
+#include <iostream>
+
+using namespace std;
+
+class Work;
+class State {
+public:
+    virtual void WriteProgram(Work *w) = 0;
+};
+
+class Work {
+private:
+    State *current;
+    double hour;        // "钟点"属性，状态转换的依据
+    bool finish;        // "任务完成"属性，是否能下班的依据
+
+public:
+    Work(State *s) {
+        finish = false;
+        current = s;
+    }
+    ~Work() { delete current; }
+
+    double GetHour(void) { return hour; }
+    void SetHour(double value) { hour = value; }
+
+    bool GetTaskFinished(void) { return finish; }
+    void SetTaskFinished(bool value) { finish = value; }
+
+    void SetState(State *s) { 
+        delete current; 
+        current = s; 
+    }
+
+    void WriteProgram() {
+        current->WriteProgram(this);
+    }
+};
+
+// 下班休息状态
+class RestState : public State {
+public:
+    void WriteProgram(Work *w) {
+        cout << "当前时间：" << w->GetHour() << " 点 下班回家了\n";
+    }
+};
+
+// 睡眠状态
+class SleepingState : public State {
+public:
+    void WriteProgram(Work *w) {
+        cout << "当前时间：" << w->GetHour() << " 点 不行了，睡着了\n";
+    }
+};
+
+// 晚间工作状态
+class EveningState : public State {
+public:
+    void WriteProgram(Work *w) {
+        if (w->GetTaskFinished()) {
+            w->SetState(new RestState());     // 如果完成任务，则转入下班状态
+            w->WriteProgram();
+        } else {
+            if (w->GetHour() < 21) {
+                cout << "当前时间：" << w->GetHour() << " 点 加班哦，疲累之极\n";
+            } else {
+                w->SetState(new SleepingState());   // 超过21点，则转入睡眠工作状态
+                w->WriteProgram();
+            }
+        }
+    }
+};
+
+// 下午工作状态
+class AfternoonState : public State {
+public:
+    void WriteProgram(Work *w) {
+        if (w->GetHour() < 17) {
+            cout << "当前时间：" << w->GetHour() << " 点 下午状态还不错，继续努力\n";
+        } else {
+            w->SetState(new EveningState());  // 超过17点，则转入傍晚工作状态
+            w->WriteProgram();
+        }
+    }
+};
+
+// 中午工作状态
+class NoonState : public State {
+public:
+    void WriteProgram(Work *w) {
+        if (w->GetHour() < 13) {
+            cout << "当前时间：" << w->GetHour() << " 点 饿了，午饭；犯困，午休\n";
+        } else {
+            w->SetState(new AfternoonState());  // 超过13点，则转入下午工作状态
+            w->WriteProgram();
+        }
+    }
+};
+
+// 上午工作状态
+class ForenoonState : public State {
+public:
+    void WriteProgram(Work *w) {
+        if (w->GetHour() < 12) {
+            cout << "当前时间：" << w->GetHour() << " 点 上午工作，精神百倍\n";
+        } else {
+            w->SetState(new NoonState());      // 超过12点，则转入中午工作状态
+            w->WriteProgram();
+        }
+    }
+};
+
+int main() {
+
+    Work *emergencyproj = new Work(new ForenoonState());
+    emergencyproj->SetHour(9);
+    emergencyproj->WriteProgram();
+    emergencyproj->SetHour(10);
+    emergencyproj->WriteProgram();
+    emergencyproj->SetHour(12);
+    emergencyproj->WriteProgram();
+    emergencyproj->SetHour(13);
+    emergencyproj->WriteProgram();
+    emergencyproj->SetHour(14);
+    emergencyproj->WriteProgram();
+    emergencyproj->SetHour(17);
+    emergencyproj->WriteProgram();
+
+    emergencyproj->SetTaskFinished(false);
+    emergencyproj->WriteProgram();
+
+    emergencyproj->SetHour(19);
+    emergencyproj->WriteProgram();
+    emergencyproj->SetHour(22);
+    emergencyproj->WriteProgram();
+
+    return 0;
+}
+```
+
+UML图：
+
+![observer](img\design_pattern\build.png)
