@@ -475,6 +475,7 @@ UML图：
 
 ```
 #include <iostream>
+#include <mutex> 
 
 using namespace std;
 
@@ -485,12 +486,19 @@ public:
 	{
 		if(m_Instance == NULL)
 		{
-			Lock();		//C++没有直接的Lock操作，请使用其它库的Lock，比如Boost，此处仅为了说明
+			std::lock_guard<std::mutex> lock(m_mutex);  
 			if (m_Instance == NULL )
 			{
+                /*
+                    为了执行下面一条代码，机器需要做三样事：
+                        1、singleton对象分配空间       operator new(sizeof(Singleton))
+                        2、在分配的空间中构造对象       new (_instance) Singleton;  
+                        3、使_instance指向分配的空间    _instance =
+                    遗憾的是编译器并不是严格按照上面的顺序来执行的，可以交换2和3。这样就造成了“双检锁”机制失效的问题，
+                    解决这个问题的方法可以参考《Linux多线程服务端编程：使用muduo C++网络库》中 2.5 线程安全的Singleton实现
+                */
 				m_Instance = new Singleton();
 			}
-			UnLock();	//C++没有直接的Lock操作，请使用其它库的Lock，比如Boost，此处仅为了说明
 		}
 		
 		return m_Instance;
@@ -514,15 +522,17 @@ public:
 private:
 	Singleton(){ m_Test = 10; }
 	static Singleton *m_Instance;
+    static std::mutex m_mutex;
 	int m_Test;
 };
-Singleton *Singleton ::m_Instance = NULL;
+Singleton *Singleton::m_Instance = NULL;
+std::mutex Singleton::m_mutex;
 
 int main(int argc , char *argv [])
 {
-	Singleton *singletonObj = Singleton ::GetInstance();
+	Singleton *singletonObj = Singleton::GetInstance();
 	cout<< singletonObj->GetTest() << endl;
-	Singleton ::DestoryInstance();
+	Singleton::DestoryInstance();
 	
 	return 0;
 }
