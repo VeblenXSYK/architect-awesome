@@ -1508,3 +1508,70 @@ int main() {
 UML图：
 
 ![observer](img\design_pattern\component.png)
+
+# 十六、桥接模式
+
+	桥接模式是将抽象部分与它的实现部分分离，使它们都可以独立地变化。考虑装操作系统，有多种配置的计算机，同样也有多款操作系统。如何运用桥接模式呢？可以将操作系统和计算机分别抽象出来，让它们各自发展，减少它们的耦合度。当然了，两者之间有标准的接口。这样设计，不论是对于计算机，还是操作系统都是非常有利的。
+
+```
+#include <iostream>
+
+using namespace std;
+
+// 操作系统
+class OS {
+public:
+	virtual void InstallOS_Imp() {}
+};
+
+class WindowOS: public OS {
+public:
+	void InstallOS_Imp() { cout << "安装Window操作系统" << endl; } 
+};
+
+class LinuxOS: public OS {
+public:
+	void InstallOS_Imp() { cout << "安装Linux操作系统" << endl; } 
+};
+
+// 计算机
+class Computer {
+public:
+    virtual void InstallOS() {}
+    void SetOS(OS *os) { this->os = os; }
+protected:
+    OS *os;
+};
+
+class DellComputer : public Computer {
+public:
+    void InstallOS() {
+        os->InstallOS_Imp();
+    }
+};
+
+class AppleComputer: public Computer
+{
+public:
+	void InstallOS() { 
+        os->InstallOS_Imp(); 
+    }
+};
+
+int main() {
+
+	Computer *computer1 = new AppleComputer();
+
+    computer1->SetOS(new WindowOS());
+	computer1->InstallOS();
+
+    computer1->SetOS(new LinuxOS());
+	computer1->InstallOS();
+
+    return 0;
+}
+```
+
+UML图：
+
+![observer](img\design_pattern\bridge.png)
