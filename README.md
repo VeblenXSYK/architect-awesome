@@ -386,20 +386,18 @@
 
 ### 二叉树
 
-每个节点最多有两个叶子节点。
-*  [《二叉树》](https://blog.csdn.net/cai2016/article/details/52589952)
+可以合并"链表插入与删除的优势" 和 "有序数组查找的优势"。
 
 ### 完全二叉树
-* [《完全二叉树》](https://baike.baidu.com/item/%E5%AE%8C%E5%85%A8%E4%BA%8C%E5%8F%89%E6%A0%91/7773232?fr=aladdin)
-	* 叶节点只能出现在最下层和次下层，并且最下面一层的结点都集中在该层最左边的若干位置的二叉树。
+完全二叉树的所有结点与同样深度的满二叉树，它们按层序编号相同的结点，是一一对应的。
 
 ### 平衡二叉树
-左右两个子树的高度差的绝对值不超过1，并且左右两个子树都是一棵平衡二叉树。
+是一种二叉排序树，其中每一个节点的左子树和右子树高度差的绝对值不超过1。
 * [《浅谈数据结构-平衡二叉树》](http://www.cnblogs.com/polly333/p/4798944.html)
 * [《浅谈算法和数据结构: 八 平衡查找树之2-3树》](http://www.cnblogs.com/yangecnu/p/Introduce-2-3-Search-Tree.html)
 
-### 二叉查找树（BST）
-二叉查找树（Binary Search Tree），也称有序二叉树（ordered binary tree）,排序二叉树（sorted binary tree）。
+### 二叉排序树（BST）
+二叉排序树（Binary Sort Tree），也称二叉查找树（ordered Search tree）。
 
 * [《浅谈算法和数据结构: 七 二叉查找树》](http://www.cnblogs.com/yangecnu/p/Introduce-Binary-Search-Tree.html)
 
@@ -433,8 +431,7 @@ Hbase、LevelDB、Tair（Long DB）、nessDB 采用 LSM 树的结构。LSM可以
 
 经常用于大规模数据的排重检查。
 
-* [《Java Bitset类》](http://www.runoob.com/java/java-bitset-class.html)
-* [《Java BitSet（位集）》](https://blog.csdn.net/caiandyong/article/details/51581160)
+* [《在2.5亿个整数中找出不重复的整数的C++实现》](https://github.com/VeblenXSYK/architect-awesome/blob/master/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%2B%E7%AE%97%E6%B3%95/bitset.cpp)
 
 # 常用算法
 
